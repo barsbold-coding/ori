@@ -1,13 +1,18 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const shopSelectorBtn = document.getElementById('shop-selector-btn');
-    const continueBtn = document.getElementById('continue-btn');
+import "./components/menu-categories.js";
+import "./components/item-card.js";
+import "./components/header.js";
 
-    shopSelectorBtn.addEventListener('click', function() {
- 
-        alert('Shop selection modal would appear here');
-    });
+import "./pages/landing-page.js";
+import "./pages/menu-page.js";
+import "./pages/item-page.js";
 
-    continueBtn.addEventListener('click', function() {
-        window.location.href = 'menu.html';
-    });
+import { Router } from "./router.js";
+
+const router = new Router({
+  rootId: "app",
+  routes: {
+    '/': 'landing-page',
+    '/menu': 'menu-page',
+    '/item/:id': 'item-page',
+  }
 });
