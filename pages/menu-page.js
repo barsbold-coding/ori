@@ -11,19 +11,49 @@ export default class MenuPage extends HTMLElement {
     const res = await fetch("../data/items.json");
     this.data = await res.json();
 
-    this.render();
+    this.renderItems();
   }
 
-  onTabChange(tab) {
-    this.tab = tab;
-    this.render();
+  renderItems() {
+    const container = this.shadowRoot.getElementById('menu-items-container');
+    if (!container) return;
+    
+    const itemsHTML = this.data.filter(el => el.type === this.tab).map(el => `
+      <item-card
+        id="${el.id}"
+        name="${el.name}"
+        price="${el.price}"
+        img="${el.image}"
+      ></item-card>
+    `).join("");
+    
+    container.innerHTML = itemsHTML;
+    
+    this.updateActiveButton();
+  }
+
+  updateActiveButton() {
+    const menuCategoriesComponent = this.shadowRoot.querySelector('menu-categories');
+    if (!menuCategoriesComponent) return;
+    
+    const buttons = menuCategoriesComponent.shadowRoot.querySelectorAll('.category-btn');
+    
+    buttons.forEach(button => {
+      if (button.dataset.category === this.tab) {
+        button.classList.add('active');
+      } else {
+        button.classList.remove('active');
+      }
+    });
   }
 
   connectedCallback() {
     this.fetchData();
     const categoryBtn = this.shadowRoot.querySelector("menu-categories");
-    categoryBtn.addEventListener('change-tab', (e) => console.log(e));
-    console.log(categoryBtn);
+    categoryBtn.addEventListener('change-tab', (e) => {
+      this.tab = e.detail.tab;
+      this.renderItems();
+    });
   }
 
   styleSheet = `
@@ -203,16 +233,7 @@ export default class MenuPage extends HTMLElement {
       <div class="container">
       <menu-categories></menu-categories>
         <div class="menu-items">
-          <div class="menu-section" id="hot">
-            ${
-              this.data.filter(el => el.type === this.tab).map(el => `
-                  <item-card
-                    img="${el.image}"
-                    name="${el.name}"
-                    price="${el.price}"
-                  ></item-card>
-                `).join("")
-            }
+          <div class="menu-section" id="menu-items-container">
           </div>
         </div>
       </div>

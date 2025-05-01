@@ -7,6 +7,9 @@ export default class ItemCard extends HTMLElement {
   render() {
     this.shadowRoot.innerHTML = `
       <style>
+        a {
+          text-decoration: none;
+        }
         button {
             cursor: pointer;
             background-color: #d4a574;
@@ -73,13 +76,15 @@ export default class ItemCard extends HTMLElement {
             }
         }
       </style>
-      <div style="width:250px" class="menu-item" data-id="1">
-          <img src="${this.getAttribute('img')}" alt="Espresso">
-          <div class="item-details">
-              <h3>${this.getAttribute('name')}</h3>
-              <p>$${this.getAttribute('price')}</p>
-          </div>
-      </div>
+      <a data-link href="/item/${this.getAttribute("id")}">
+        <div style="width:250px" class="menu-item" data-id="1">
+            <img src="${this.getAttribute('img')}" alt="Espresso">
+            <div class="item-details">
+                <h3>${this.getAttribute('name')}</h3>
+                <p>$${this.getAttribute('price')}</p>
+            </div>
+        </div>
+      </a>
     `
   }
 }
