@@ -6,6 +6,19 @@ export default class LandingPage extends HTMLElement {
     this.render();
   }
 
+  connectedCallback() {
+    const continueBtn = this.shadowRoot.getElementById('continue-btn');
+    if (continueBtn) {
+      continueBtn.addEventListener('click', () => {
+        this.dispatchEvent(new CustomEvent('navigate', {
+          bubbles: true,
+          composed: true,
+          detail: { path: '/menu' }
+        }))
+      })
+    }
+  }
+
   render() {
     this.shadowRoot.innerHTML = `
       <style>

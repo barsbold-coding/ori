@@ -4,6 +4,9 @@ export default class ItemCard extends HTMLElement {
     this.attachShadow({ mode: 'open' });
     this.render();
   }
+  attributeChangedCallback() {
+    this.render();
+  }
   render() {
     this.shadowRoot.innerHTML = `
       <style>

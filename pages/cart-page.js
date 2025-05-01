@@ -3,6 +3,32 @@ export default class CartPage extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
     this.render();
+    this.renderCartItems();
+  }
+
+  renderCartItems() {
+    const emptyCart = `
+      <div id="empty-cart" class="empty-cart hidden">
+        <div class="empty-cart-animation">
+          <div class="coffee-cup empty"></div>
+          <div class="coffee-drop"></div>
+        </div>
+        <h3>Your cart is empty</h3>
+        <p>Add some delicious coffee to your cart!</p>
+        <button id="browse-menu-btn" class="primary-btn">Browse Menu</button>
+      </div>
+      `;
+    const cart = this.shadowRoot.getElementById("cart-items")
+    const cartData = window.cartService.getCart();
+    console.log(cartData);
+    cartData.forEach(el => {
+      const item = document.createElement('item-card');
+      item.setAttribute('id', el.id);
+      item.setAttribute('name', el.name);
+      item.setAttribute('price', el.price);
+      item.setAttribute('img', el.image);
+      cart.appendChild(item)
+    })
   }
 
   styleSheet = `
@@ -312,15 +338,6 @@ export default class CartPage extends HTMLElement {
         <div id="cart-items" class="cart-items">
         </div>
         
-        <div id="empty-cart" class="empty-cart hidden">
-            <div class="empty-cart-animation">
-                <div class="coffee-cup empty"></div>
-                <div class="coffee-drop"></div>
-            </div>
-            <h3>Your cart is empty</h3>
-            <p>Add some delicious coffee to your cart!</p>
-            <button id="browse-menu-btn" class="primary-btn">Browse Menu</button>
-        </div>
         
         <div id="cart-summary" class="cart-summary">
             <div class="summary-row">

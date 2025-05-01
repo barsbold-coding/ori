@@ -10,6 +10,9 @@ import "./pages/login-page.js"
 import "./pages/cart-page.js";
 
 import { Router } from "./router.js";
+import { cartService } from "./cart-service.js";
+
+window.cartService = cartService;
 
 const hideHeaderOnPaths = [
   '/login', 
@@ -29,7 +32,21 @@ const router = new Router({
     '/item/:id': 'item-page',
     '/login': 'login-page',
     '/cart': 'cart-page',
+    '/account': 'login-page',
+    '/order-history': 'login-page',
   },
   hideHeaderOnPaths,
   hideFooterOnPaths
 });
+
+window.router = router;
+
+window.addTestItemToCart = () => {
+  cartService.addItem({
+    id: Math.floor(Math.random() * 1000),
+    name: "Test Coffee",
+    price: 4.99,
+    quantity: 1
+  });
+  console.log("Added test item to cart");
+};

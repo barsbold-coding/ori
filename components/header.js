@@ -3,6 +3,7 @@ export default class Header extends HTMLElement {
     super();
     this.attachShadow({ mode: 'open' });
     this.render();
+    this.setupEventListeners();
   }
 
   render() {
@@ -137,6 +138,51 @@ export default class Header extends HTMLElement {
         </div>
     </header>
     `;
+  }
+
+  setupEventListeners() {
+    const cartButton = this.shadowRoot.getElementById('cart-btn');
+    const historyButton = this.shadowRoot.getElementById('history-btn');
+    const accountButton = this.shadowRoot.getElementById('account-btn');
+
+    cartButton.addEventListener('click', () => {
+      this.navigateTo('/cart');
+    });
+
+    historyButton.addEventListener('click', () => {
+      this.navigateTo('/order-history');
+    });
+
+    accountButton.addEventListener('click', () => {
+      this.navigateTo('/login');
+    });
+
+    this.updateCartCount();
+    
+    window.addEventListener('cart-updated', () => {
+      this.updateCartCount();
+    });
+  }
+
+  updateCartCount() {
+    const cartCountEl = this.shadowRoot.getElementById('cart-count');
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const itemCount = cart.reduce((total, item) => total + (item.quantity || 1), 0);
+    cartCountEl.textContent = itemCount;
+  }
+
+  navigateTo(path) {
+    const navigationEvent = new CustomEvent('navigate', { 
+      bubbles: true, 
+      composed: true,
+      detail: { path }
+    });
+    this.dispatchEvent(navigationEvent);
+  }
+
+  connectedCallback() {
+    // Update cart count when component is connected to DOM
+    this.updateCartCount();
   }
 }
 

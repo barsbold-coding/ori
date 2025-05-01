@@ -7,6 +7,7 @@ export class Router {
     this.hideFooterOnPaths = hideFooterOnPaths; // Paths where footer should be hidden
     this.handleClick = this.handleClick.bind(this);
     this.handlePopState = this.handlePopState.bind(this);
+    this.handleNavigationEvent = this.handleNavigationEvent.bind(this);
     this.init();
   }
 
@@ -60,7 +61,13 @@ export class Router {
   render(path) {
     const match = this.matchRoute(path);
     if (!match) {
-      this.root.innerHTML = `<h1>404 Not Found</h1>`;
+      if (this.routes['/404']) {
+        const el = document.createElement(this.routes['/404']);
+        this.root.innerHTML = '';
+        this.root.appendChild(el);
+      } else {
+        this.root.innerHTML = `<h1>404 Not Found</h1>`;
+      }
       return;
     }
 
@@ -99,12 +106,20 @@ export class Router {
     }
   }
 
+  handleNavigationEvent(event) {
+    if (event.detail && event.detail.path) {
+      event.preventDefault();
+      this.navigate(event.detail.path);
+    }
+  }
+
   handlePopState() {
     this.render(location.pathname);
   }
 
   init() {
     document.addEventListener('click', this.handleClick);
+    document.addEventListener('navigate', this.handleNavigationEvent);
     window.addEventListener('popstate', this.handlePopState);
     this.render(location.pathname);
   }
