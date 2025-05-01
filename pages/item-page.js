@@ -14,13 +14,29 @@ export default class ItemPage extends HTMLElement {
     })
     this.render();
   }
+  onDataFetched() {
+
+  }
+
+  setupEventlisteners() {
+    const addToCartBtn = this.shadowRoot.getElementById('add-to-cart-btn');
+    if (addToCartBtn) {
+      console.log(addToCartBtn)
+      addToCartBtn.addEventListener('click', () => {
+        window.cartSerivce.addItem({
+          ...this.data,
+          quantity: 1,
+        })
+      })
+    }
+  }
 
   connectedCallback() {
     this.fetchData();
+    this.setupEventlisteners();
   }
-  
-  render() {
-    this.shadowRoot.innerHTML = `
+
+  styleSheet = `
       <style>
         * {
             margin: 0;
@@ -297,6 +313,11 @@ export default class ItemPage extends HTMLElement {
             }
         }
       </style>
+  `
+  
+  render() {
+    this.shadowRoot.innerHTML = `
+      ${this.styleSheet}
       <div class="container">
           <div class="item-details">
               <div class="item-image">
