@@ -1,8 +1,10 @@
 export class Router {
-  constructor({ routes, rootId }) {
+  constructor({ routes, rootId, hideHeaderOnPaths = [], hideFooterOnPaths = [] }) {
     this.routes = routes; // { "/": "home-page", "/user/:id": "user-page" }
     this.root = document.getElementById(rootId);
     this.routeMatchers = this.compileRoutes(routes);
+    this.hideHeaderOnPaths = hideHeaderOnPaths; // Paths where header should be hidden
+    this.hideFooterOnPaths = hideFooterOnPaths; // Paths where footer should be hidden
     this.handleClick = this.handleClick.bind(this);
     this.handlePopState = this.handlePopState.bind(this);
     this.init();
@@ -35,6 +37,26 @@ export class Router {
     return null;
   }
 
+  shouldShowHeader(path) {
+    return !this.pathMatchesAny(path, this.hideHeaderOnPaths);
+  }
+
+  shouldShowFooter(path) {
+    return !this.pathMatchesAny(path, this.hideFooterOnPaths);
+  }
+
+  pathMatchesAny(path, patterns) {
+    for (const pattern of patterns) {
+      if (pattern === path) return true;
+      
+      if (pattern.endsWith('*')) {
+        const prefix = pattern.slice(0, -1);
+        if (path.startsWith(prefix)) return true;
+      }
+    }
+    return false;
+  }
+
   render(path) {
     const match = this.matchRoute(path);
     if (!match) {
@@ -47,6 +69,16 @@ export class Router {
     const el = document.createElement(component);
     el.routeParams = params; // Pass params to the custom element
     this.root.appendChild(el);
+
+    const header = document.querySelector('nav-bar');
+    if (header) {
+      header.style.display = this.shouldShowHeader(path) ? 'block' : 'none';
+    }
+
+    const footer = document.querySelector('my-footer');
+    if (footer) {
+      footer.style.display = this.shouldShowFooter(path) ? 'block' : 'none';
+    }
   }
 
   navigate(path) {
@@ -77,4 +109,3 @@ export class Router {
     this.render(location.pathname);
   }
 }
-

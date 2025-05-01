@@ -5,7 +5,7 @@ export default class LoginPage extends HTMLElement {
     this.render();
   }
 
-  style = `
+  styleSheet = `
     <style>
       * {
           margin: 0;
@@ -279,7 +279,7 @@ export default class LoginPage extends HTMLElement {
 
   render() {
     this.shadowRoot.innerHTML = `
-      ${this.style}
+      ${this.styleSheet}
       <div class="container">
         <a data-link href="menu" class="go-back-btn">← Back</a>
           <div class="coffee-bg"></div>

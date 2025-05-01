@@ -26,8 +26,7 @@ export default class MenuPage extends HTMLElement {
     console.log(categoryBtn);
   }
 
-  render() {
-    this.shadowRoot.innerHTML = `
+  styleSheet = `
       <style>
         * {
             margin: 0;
@@ -196,9 +195,13 @@ export default class MenuPage extends HTMLElement {
             }
         }
       </style>
+  `
+
+  render() {
+    this.shadowRoot.innerHTML = `
+      ${this.styleSheet}
       <div class="container">
       <menu-categories></menu-categories>
-
         <div class="menu-items">
           <div class="menu-section" id="hot">
             ${

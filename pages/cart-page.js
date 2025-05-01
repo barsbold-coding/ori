@@ -5,7 +5,7 @@ export default class CartPage extends HTMLElement {
     this.render();
   }
 
-  style = `
+  styleSheet = `
   <style>
     * {
         margin: 0;
@@ -305,7 +305,7 @@ export default class CartPage extends HTMLElement {
 
   render() {
     this.shadowRoot.innerHTML = `
-    ${this.style}
+    ${this.styleSheet}
     <div class="container">
         <h2>Your Cart</h2>
         

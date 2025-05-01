@@ -11,6 +11,16 @@ import "./pages/cart-page.js";
 
 import { Router } from "./router.js";
 
+const hideHeaderOnPaths = [
+  '/login', 
+  '/'
+];
+
+const hideFooterOnPaths = [
+  '/login',
+  '/'
+];
+
 const router = new Router({
   rootId: "app",
   routes: {
@@ -19,5 +29,7 @@ const router = new Router({
     '/item/:id': 'item-page',
     '/login': 'login-page',
     '/cart': 'cart-page',
-  }
+  },
+  hideHeaderOnPaths,
+  hideFooterOnPaths
 });

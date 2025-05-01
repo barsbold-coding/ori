@@ -5,7 +5,7 @@ export default class Footer extends HTMLElement {
     this.render();
   }
 
-  style = `
+  styleSheet = `
     <style>
       footer {
           background-color: #333;
@@ -89,7 +89,7 @@ export default class Footer extends HTMLElement {
 
   render() {
     this.shadowRoot.innerHTML = `
-      ${this.style}
+      ${this.styleSheet}
       <footer>
           <div class="footer-content">
               <div class="footer-section">
