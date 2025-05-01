@@ -1,6 +1,7 @@
 import "./components/menu-categories.js";
 import "./components/item-card.js";
 import "./components/header.js";
+import "./components/footer.js";
 
 import "./pages/landing-page.js";
 import "./pages/menu-page.js";
