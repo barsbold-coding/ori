@@ -3,6 +3,7 @@ export default class LoginPage extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
     this.render();
+    this.setupEventListeners();
   }
 
   styleSheet = `
@@ -356,6 +357,83 @@ export default class LoginPage extends HTMLElement {
           </div>
       </div>
     `
+  }
+
+  setupEventListeners() {
+    // Get tab buttons
+    const loginTab = this.shadowRoot.getElementById('login-tab');
+    const signupTab = this.shadowRoot.getElementById('signup-tab');
+    
+    // Get forms
+    const loginForm = this.shadowRoot.getElementById('login-form');
+    const signupForm = this.shadowRoot.getElementById('signup-form');
+    
+    // Get link buttons within forms
+    const goToSignup = this.shadowRoot.getElementById('go-to-signup');
+    const goToLogin = this.shadowRoot.getElementById('go-to-login');
+
+    // Tab button click handlers
+    loginTab.addEventListener('click', () => {
+      this.switchToLogin();
+    });
+
+    signupTab.addEventListener('click', () => {
+      this.switchToSignup();
+    });
+
+    // Link buttons click handlers
+    goToSignup.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.switchToSignup();
+    });
+
+    goToLogin.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.switchToLogin();
+    });
+
+    // Form submit handlers
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      // Here you would add the actual login logic
+      console.log('Login form submitted');
+    });
+
+    signupForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      // Here you would add the actual signup logic
+      console.log('Signup form submitted');
+    });
+  }
+
+  switchToLogin() {
+    const loginTab = this.shadowRoot.getElementById('login-tab');
+    const signupTab = this.shadowRoot.getElementById('signup-tab');
+    const loginForm = this.shadowRoot.getElementById('login-form');
+    const signupForm = this.shadowRoot.getElementById('signup-form');
+
+    // Update tab buttons
+    loginTab.classList.add('active');
+    signupTab.classList.remove('active');
+    
+    // Update forms visibility
+    loginForm.classList.remove('hidden');
+    signupForm.classList.add('hidden');
+  }
+
+  switchToSignup() {
+    const loginTab = this.shadowRoot.getElementById('login-tab');
+    const signupTab = this.shadowRoot.getElementById('signup-tab');
+    const loginForm = this.shadowRoot.getElementById('login-form');
+    const signupForm = this.shadowRoot.getElementById('signup-form');
+
+    // Update tab buttons
+    loginTab.classList.remove('active');
+    signupTab.classList.add('active');
+    
+    // Update forms visibility
+    loginForm.classList.add('hidden');
+    signupForm.classList.remove('hidden');
   }
 }
 
